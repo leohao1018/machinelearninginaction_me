@@ -167,17 +167,26 @@ if __name__ == '__main__':
     classifier = goods_classifier()
     # dataFilePath = '{0}\\category_by_bayes\\goods_data_car.xlsx'.format(os.path.dirname(os.getcwd()))
     # toCategory(dataFilePath, 330)
-    dataFilePath = '{0}\\category_by_bayes\\goods_data_credit.xlsx'.format(os.path.dirname(os.getcwd()))
+    ##########
+    # dataFilePath = '{0}\\category_by_bayes\\goods_data_credit.xlsx'.format(os.path.dirname(os.getcwd()))
+    # testNameSet = []
+    # testFilePath = '{0}\\category_by_bayes\\test_credit.txt'.format(os.path.dirname(os.getcwd()))
+    # file = open(testFilePath, encoding='utf8')
+    # for line in file.readlines():
+    #     testNameSet.append(line.strip('\n'))
+    #
+    # flagSet = classifier.toClassifier(testNameSet, dataFilePath, classifier.getGoodsWords)
+    # print(flagSet)
 
+    ###########
+    dataFilePath = '{0}\\category_by_bayes\\goods_data_car.xlsx'.format(os.path.dirname(os.getcwd()))
     testNameSet = []
-    # name1 = '各种小额贷款 相关技术 P2P网络贷款技术资料 贷款操作技术'
-    # name2 = '闪电借款提额 企业邮箱认证 企业邮箱验证代收 闪电贷款高级认证'
-    # testNameSet.append(name1)
-    # testNameSet.append(name2)
-    testFilePath = '{0}\\category_by_bayes\\test_credit.txt'.format(os.path.dirname(os.getcwd()))
+    testFilePath = '{0}\\category_by_bayes\\test_car.txt'.format(os.path.dirname(os.getcwd()))
     file = open(testFilePath, encoding='utf8')
     for line in file.readlines():
         testNameSet.append(line.strip('\n'))
 
-    flagSet = classifier.toClassifier(testNameSet, dataFilePath, classifier.getGoodsWords)
+    flagSet = classifier.toClassifier(testNameSet, dataFilePath, classifier.getCarGoodsWords)
     print(flagSet)
+
+
