@@ -224,5 +224,5 @@ def stageWiseTest():
 if __name__ == '__main__':
     # demoTest()
     # ageTest()
-    # showRidge()
-    stageWiseTest()
+    showRidge()
+    # stageWiseTest()
