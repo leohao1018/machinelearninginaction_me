@@ -21,8 +21,8 @@ def loadDataSet():
     return postingList, classVec
 
 
-#1、将文本转换为数字向量
-##a、建立不重复的词汇表
+# 1、将文本转换为数字向量
+# a、建立不重复的词汇表
 def createVocabList(dataSet):
     vocabSet = set([])  # create empty set
     for document in dataSet:
@@ -30,15 +30,15 @@ def createVocabList(dataSet):
     return list(vocabSet)
 
 
-#朴素贝叶斯分类器训练集
-def trainNB0(trainMatrix, trainCategory):                   #传入参数为文档矩阵，每篇文档类别标签所构成的向量
-    numTrainDocs = len(trainMatrix)                         #文档矩阵的长度
-    numWords = len(trainMatrix[0])                          #第一个文档的单词个数
-    pAbusive = sum(trainCategory) / float(numTrainDocs)     #任意文档属于侮辱性文档概率
+# 朴素贝叶斯分类器训练集
+def trainNB0(trainMatrix, trainCategory):  # 传入参数为文档矩阵，每篇文档类别标签所构成的向量
+    numTrainDocs = len(trainMatrix)  # 文档矩阵的长度
+    numWords = len(trainMatrix[0])  # 第一个文档的单词个数
+    pAbusive = sum(trainCategory) / float(numTrainDocs)  # 任意文档属于侮辱性文档概率
     p0Num = np.ones(numWords)
-    p1Num = np.ones(numWords)                               #初始化两个矩阵，长度为numWords，内容值为1
+    p1Num = np.ones(numWords)  # 初始化两个矩阵，长度为numWords，内容值为1
     p0Denom = 2.0
-    p1Denom = 2.0                                           #初始化概率
+    p1Denom = 2.0  # 初始化概率
     for i in range(numTrainDocs):
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
@@ -51,9 +51,9 @@ def trainNB0(trainMatrix, trainCategory):                   #传入参数为文�
     return p0Vect, p1Vect, pAbusive
 
 
-##b、将每条言语转换为数字向量：建立与词汇表同等大小的言语向量，若言语中的词汇在词汇表中出现则标记为1，否则为0.
-#vocabList:单词字典集合
-#inputSet:单条文本
+# b、将每条言语转换为数字向量：建立与词汇表同等大小的言语向量，若言语中的词汇在词汇表中出现则标记为1，否则为0.
+# vocabList:单词字典集合
+# inputSet:单条文本
 def setOfWords2Vec(vocabList, inputSet):
     returnVec = [0] * len(vocabList)
     for word in inputSet:
@@ -74,7 +74,7 @@ def bagOfWords2VecMN(vocabList, inputSet):
     return returnVec
 
 
-#朴素贝叶斯分类函数
+# 朴素贝叶斯分类函数
 def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
     p0 = sum(vec2Classify * p0Vec) + np.log(1.0 - pClass1)
     p1 = sum(vec2Classify * p1Vec) + np.log(pClass1)
@@ -85,13 +85,13 @@ def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
 
 
 def testTrain():
-    listOPosts, listClasses = loadDataSet()                             #产生文档矩阵和对应的标签
-    myVocabList = createVocabList(listOPosts)                           #创建并集
+    listOPosts, listClasses = loadDataSet()  # 产生文档矩阵和对应的标签
+    myVocabList = createVocabList(listOPosts)  # 创建并集
 
-    trainMat = []                                                       #创建一个空的列表
+    trainMat = []  # 创建一个空的列表
     for postinDoc in listOPosts:
-        trainMat.append(setOfWords2Vec(myVocabList, postinDoc))         #使用词向量来填充trainMat列表
-    p0V, p1V, pAb = trainNB0(np.array(trainMat), np.array(listClasses)) #训练函数
+        trainMat.append(setOfWords2Vec(myVocabList, postinDoc))  # 使用词向量来填充trainMat列表
+    p0V, p1V, pAb = trainNB0(np.array(trainMat), np.array(listClasses))  # 训练函数
     print(p0V)
     print(p1V)
     print(pAb)
@@ -135,17 +135,17 @@ def spamTest():
     vocabList = createVocabList(docList)
 
     # 划分测试集 和 训练集
-    traingSet = range(50)
+    trainSet = range(50)
     testSet = []
     for i in range(10):
-        randIndex = int(random.uniform(0, len(traingSet)))
-        testSet.append(traingSet[randIndex])
-        del (list(traingSet)[randIndex])
+        randIndex = int(random.uniform(0, len(trainSet)))
+        testSet.append(trainSet[randIndex])
+        del (list(trainSet)[randIndex])
 
     # 朴素贝叶斯计算概率
     trainMat = []
     trainClasses = []
-    for docIndex in traingSet:
+    for docIndex in trainSet:
         trainMat.append(bagOfWords2VecMN(vocabList, docList[docIndex]))
         trainClasses.append(classList[docIndex])
     p0V, p1V, pSpam = trainNB0(np.array(trainMat), np.array(trainClasses))
@@ -170,8 +170,8 @@ def calcMostFreq(vocabList, fullText):
 
 
 def localWords(feed1, feed0):
-    docList = [];
-    classList = [];
+    docList = []
+    classList = []
     fullText = []
     minLen = min(len(feed1['entries']), len(feed0['entries']))
     for i in range(minLen):
@@ -224,7 +224,7 @@ def getTopWords(ny, sf):
     print('SF*******************************************************************************')
     for item in sortedSF:
         print(item[0])
-    sortedSY = sorted(topNY, key=lambda  pair:pair[1], reverse=True)
+    sortedSY = sorted(topNY, key=lambda pair: pair[1], reverse=True)
     print('NY*******************************************************************************')
     for item in sortedSY:
         print(item[0])

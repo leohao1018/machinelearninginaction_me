@@ -11,7 +11,7 @@ import requests
 import time
 import numpy as np
 from bs4 import BeautifulSoup
-from coverage.files import os
+# from coverage.files import os
 
 from bayes_function import createVocabList, bagOfWords2VecMN, trainNB0, classifyNB
 
@@ -56,30 +56,30 @@ class goods_classifier:
             categories = soup.select('.rank-list-ul > li > h4 > a')
             for category in categories:
                 allCategory.append(category.text)
-            time.sleep(0.1)
+            time.sleep(10)
         return allCategory
 
     def getCarGoodsWords(self, goodsName):
-        '''
+        """
         商品名称分词（获取汽车相关词）
         :param goodsName:
         :return:
-        '''
+        """
         stopWords = {}.fromkeys(self.stopWordsList)
         segs = jieba.cut(goodsName, cut_all=False)
         final = []
         for seg in segs:
             if seg not in stopWords and seg.strip() != '' and (
-                            '车' in seg or seg in self.carCategories):  # 去除停用词，只获取带‘车’字的词
+                    '车' in seg or seg in self.carCategories):  # 去除停用词，只获取带‘车’字的词
                 final.append(seg)
         return final
 
     def getGoodsWords(self, goodsName):
-        '''
+        """
         商品名称分词（仅去除停用词）
         :param goodsName:
         :return:
-        '''
+        """
         stopWords = {}.fromkeys(self.stopWordsList)
         segs = jieba.cut(goodsName, cut_all=False)
         final = []
@@ -89,10 +89,10 @@ class goods_classifier:
         return final
 
     def toClassifier(self, testNameSet, dataFilePath, observer):
-        '''
+        """
         定义分类器分类
         :return:
-        '''
+        """
         excelDataSet = pd.read_excel(dataFilePath)
         goodsNameDataSet = excelDataSet['goodsName']
         flagSet = excelDataSet['flag']
@@ -143,7 +143,7 @@ class goods_classifier:
             if probabilityFlag != originFlag:
                 errorCount += 1
                 print(colored("classification error ====> " + (
-                    goodsNameDataSet[docIndex] + ', cal flag is ====> ' + str(probabilityFlag)), 'red'))
+                        goodsNameDataSet[docIndex] + ', cal flag is ====> ' + str(probabilityFlag)), 'red'))
             print((goodsNameDataSet[docIndex]) + ' ====> ' + str(originFlag))
         print(colored('this error rate is ==> ' + str(float(errorCount / len(testSet))), 'red'))
 
@@ -188,5 +188,3 @@ if __name__ == '__main__':
 
     flagSet = classifier.toClassifier(testNameSet, dataFilePath, classifier.getCarGoodsWords)
     print(flagSet)
-
-
